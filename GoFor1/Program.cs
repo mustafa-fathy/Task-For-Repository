@@ -11,7 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DbCon>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("Cs")));
-builder.Services.AddScoped<CoursesRepository>();
+builder.Services.AddScoped<ICoursesRepo,CoursesRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

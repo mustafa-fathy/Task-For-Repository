@@ -2,7 +2,7 @@
 
 namespace GoFor1.Repository
 {
-    public class CoursesRepository
+    public class CoursesRepository : ICoursesRepo
     {
         DbCon dbCon;
         public CoursesRepository(DbCon _dbCon)
