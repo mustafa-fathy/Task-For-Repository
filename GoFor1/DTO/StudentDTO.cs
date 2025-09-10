@@ -1,6 +1,8 @@
-﻿namespace GoFor1.DTO
+﻿using GoFor1.Models;
+
+namespace GoFor1.DTO
 {
-    public class StudentDTO
+    public class StudentsDTo
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -8,6 +10,6 @@
         public string Phone { get; set; }
         public string Address { get; set; }
         public DateTime BirthDate { get; set; }
-        public int CourseId { get; set; }   
+        public Courses? Courses { get; set; }   
     }
 }
