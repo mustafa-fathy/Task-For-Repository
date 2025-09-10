@@ -15,7 +15,7 @@ namespace GoFor1.Controllers
         {
             stR = _stR;
         }
-        [HttpGet("GetAllStudents")]
+        [HttpGet]
         public IActionResult GetAllStudents()
         {
             List<Students> sts = stR.GetAllStudents();

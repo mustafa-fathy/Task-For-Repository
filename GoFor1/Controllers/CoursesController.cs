@@ -15,7 +15,7 @@ namespace GoFor1.Controllers
         {
             CR = _CR;
         }
-        [HttpGet("GetAllCourses")]
+        [HttpGet]
         public IActionResult GetAllCourses()
         {
             List<Courses> Cos = CR.GetAllCourses();
