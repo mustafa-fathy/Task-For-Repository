@@ -1,6 +1,7 @@
 ﻿using GoFor1.DTO;
 using GoFor1.Models;
 using GoFor1.Repository;
+using GoFor1.Unit_of_Work;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,15 +11,16 @@ namespace GoFor1.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        StudentRepository stR;
-        public StudentsController(StudentRepository _stR )
+        //GenericRepo<Students> stR;
+        unitWork stR;
+        public StudentsController(unitWork _stR )
         {
             stR = _stR;
         }
         [HttpGet]
         public IActionResult GetAllStudents()
         {
-            List<Students> sts = stR.GetAllStudents();
+            List<Students> sts = stR.StudentRepo.GetAll();
 
             List<StudentsDTo> stsDto =new List<StudentsDTo>();
             foreach (Students s in sts)
@@ -57,8 +59,8 @@ namespace GoFor1.Controllers
                 Courses = s.Courses
 
            };
-            stR.AddStudent(newStudent);
-            stR.Save();
+            stR.StudentRepo.Add(newStudent);
+            stR.StudentRepo.Save();
             return Created("DoneCreating",s);
 
 
@@ -76,8 +78,8 @@ namespace GoFor1.Controllers
                 BirthDate = s.BirthDate,
                 Courses = s.Courses
             };
-            stR.EditStudent(Sts,id);
-            stR.Save();
+            stR.StudentRepo.Edit(Sts,id);
+            stR.StudentRepo.Save();
             return Ok("Student updated successfully");
 
 
@@ -85,12 +87,12 @@ namespace GoFor1.Controllers
         [HttpDelete("DeleteStudent")]
         public IActionResult DeleteStudent(int id)
         {
-            var success =stR.DeleteStudent(id);
+            var success =stR.StudentRepo.Delete(id);
             if (!success)
             {
                 return NotFound("Student not found");
             }
-            stR.Save();
+            stR.StudentRepo.Save();
             return Ok("Student deleted successfully");
         }
     }

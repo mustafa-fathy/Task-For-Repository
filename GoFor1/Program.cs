@@ -1,5 +1,6 @@
 using GoFor1.Models;
 using GoFor1.Repository;
+using GoFor1.Unit_of_Work;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DbCon>(op => op.UseSqlServer(builder.Configuration.GetConnectionString("Cs")));
-builder.Services.AddScoped<ICoursesRepo,CoursesRepository>();
+//builder.Services.AddScoped<ICoursesRepo,CoursesRepository>();
+//builder.Services.AddScoped<IStudent,StudentRepository>();
+builder.Services.AddScoped<GenericRepo<unitWork>>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

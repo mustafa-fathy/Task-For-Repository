@@ -1,6 +1,7 @@
 ﻿using GoFor1.DTO;
 using GoFor1.Models;
 using GoFor1.Repository;
+using GoFor1.Unit_of_Work;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +11,15 @@ namespace GoFor1.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
-        CoursesRepository CR;
-        public CoursesController(CoursesRepository _CR)
+        unitWork CR;
+        public CoursesController(unitWork _CR)
         {
             CR = _CR;
         }
         [HttpGet]
         public IActionResult GetAllCourses()
         {
-            List<Courses> Cos = CR.GetAllCourses();
+            List<Courses> Cos = CR.CourseRepo.GetAll();
             
             List<CoursesDTO> CosDto = new List<CoursesDTO>();
             foreach (Courses c in Cos)
@@ -40,7 +41,7 @@ namespace GoFor1.Controllers
         {
            
 
-            Courses CO=CR.GetCourseById(id);
+            Courses CO=CR.CourseRepo.GetById(id);
             
             if (CO == null) return NotFound("No Course Found");
             else
@@ -79,15 +80,15 @@ namespace GoFor1.Controllers
                 Price = CD.Price
                 
             };
-            CR.AddCourse(C);
-            CR.Save();
+            CR.CourseRepo.Add(C);
+            CR.CourseRepo.Save();
             return Created("DoneCreating",CD);
            // return CreatedAtAction("Getbyid", new {id=C.Id}, C);
         }
         [HttpPut("EditCourses")]
         public IActionResult EditCourses (CoursesDTO CD,int id)
         {
-            var existingCourse = CR.GetCourseById(id);
+            var existingCourse = CR.CourseRepo.GetById(id);
             if (existingCourse == null)
             {
                 return NotFound("Course not found");
@@ -98,7 +99,7 @@ namespace GoFor1.Controllers
             existingCourse.Price = CD.Price;
             
 
-            CR.Save();
+            CR.CourseRepo.Save();
 
             // return Ok(C);
             return NoContent();
@@ -107,12 +108,12 @@ namespace GoFor1.Controllers
         [HttpDelete("DeleteCourse")]
         public IActionResult DeleteCourse(int id)
         {
-            if (CR.GetCourseById(id) == null)
+            if (CR.CourseRepo.GetById(id) == null)
             {
                 return NotFound("Course not found");
             }
-            CR.DeleteCourse(id);
-            CR.Save();
+            CR.CourseRepo.Delete(id);
+            CR.CourseRepo.Save();
             //return Ok(Co);
             return Ok("Deleted Done!");
         }
